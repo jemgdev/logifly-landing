@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logifly — User Authentication as a Service</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["'Segoe UI'", 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              bg: '#f4f4f4',
+              card: '#ffffff',
+              text: '#1a1a1a',
+              muted: '#888888',
+              border: '#e0e0e0',
+              black: '#000000',
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-brand-bg font-sans text-brand-text">
+
+  <!-- Navbar -->
+  <header class="bg-white border-b border-brand-border sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <span class="text-xl font-bold tracking-tight">Logifly</span>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-brand-muted">
+        <a href="#features" class="hover:text-brand-text transition-colors">Features</a>
+        <a href="#how-it-works" class="hover:text-brand-text transition-colors">How it works</a>
+        <a href="#pricing" class="hover:text-brand-text transition-colors">Pricing</a>
+        <a href="#faq" class="hover:text-brand-text transition-colors">FAQ</a>
+      </nav>
+      <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+         class="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800 transition-colors">
+        Get started
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+    <span class="inline-block text-xs font-medium bg-black text-white px-3 py-1 rounded-full mb-6 tracking-widest uppercase">Authentication as a Service</span>
+    <h1 class="text-5xl font-bold leading-tight mb-6 tracking-tight">
+      User management,<br class="hidden md:block" /> done for you.
+    </h1>
+    <p class="text-lg text-brand-muted max-w-xl mx-auto mb-10 leading-relaxed">
+      Logifly handles authentication, registration, roles, and sessions for all your apps — so you can focus on building your product.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+         class="bg-black text-white px-8 py-3 rounded font-medium hover:bg-gray-800 transition-colors">
+        Request access
+      </a>
+      <a href="#how-it-works"
+         class="border border-brand-border bg-white text-brand-text px-8 py-3 rounded font-medium hover:bg-brand-bg transition-colors">
+        See how it works
+      </a>
+    </div>
+  </section>
+
+  <!-- Social proof strip -->
+  <div class="border-y border-brand-border bg-white py-5">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-8 text-sm text-brand-muted">
+      <span>✅ AWS Cognito backed</span>
+      <span>✅ Multi-app support</span>
+      <span>✅ Role-based access</span>
+      <span>✅ Email confirmation flows</span>
+      <span>✅ Webhook integration</span>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features" class="max-w-5xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">Everything you need</h2>
+    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+      A complete auth layer for your apps. No infrastructure to manage, no Cognito config to wrestle with.
+    </p>
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">🔐</div>
+        <h3 class="font-semibold mb-2">Secure sign-in & sign-up</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">Email-based registration with confirmation links, password policies, and token-based sessions.</p>
+      </div>
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">🏗️</div>
+        <h3 class="font-semibold mb-2">Multi-app architecture</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">One Logifly account manages users across multiple apps. Each app has its own user pool and roles.</p>
+      </div>
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">🎭</div>
+        <h3 class="font-semibold mb-2">Role management</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">Assign and revoke roles per user per app. Validate roles on every request via the verify endpoint.</p>
+      </div>
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">🔄</div>
+        <h3 class="font-semibold mb-2">Session refresh</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">Access tokens last 60 minutes. Refresh tokens last 7 days. Seamless session continuity for your users.</p>
+      </div>
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">📧</div>
+        <h3 class="font-semibold mb-2">Email flows</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">Branded confirmation and password-reset emails in English and Spanish, sent automatically.</p>
+      </div>
+
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
+        <div class="text-2xl mb-3">🪝</div>
+        <h3 class="font-semibold mb-2">Webhooks</h3>
+        <p class="text-sm text-brand-muted leading-relaxed">Get notified when a user registers. Connect Logifly to your backend with a simple webhook URL.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="bg-white border-y border-brand-border py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">How it works</h2>
+      <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+        Up and running in minutes. No SDK required — just REST API calls.
+      </p>
+      <div class="grid md:grid-cols-3 gap-10">
+
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">1</div>
+          <h3 class="font-semibold mb-2">Request an owner account</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">Send an email to <strong>jemgdev@gmail.com</strong> with your app name. We'll create your owner account and send you credentials.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">2</div>
+          <h3 class="font-semibold mb-2">Integrate the API</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">Use your owner tokens to call the Logifly REST API. Pre-register users, manage roles, and verify sessions from your backend.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">3</div>
+          <h3 class="font-semibold mb-2">Ship your product</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">Your users get a smooth auth experience. You get full control over roles, sessions, and webhooks — without managing infrastructure.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="max-w-5xl mx-auto px-6 py-24">
+    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">Simple pricing</h2>
+    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+      Pay for what you use. Scale as your apps grow.
+    </p>
+
+    <div class="grid md:grid-cols-4 gap-6 items-start">
+
+      <!-- Free -->
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+        <div class="mb-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Free</p>
+          <p class="text-4xl font-bold mb-1">$0</p>
+          <p class="text-sm text-brand-muted">Forever free</p>
+        </div>
+        <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> 1 app</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Up to 100 users</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Sign-in / sign-up</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Email confirmation</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Role management</li>
+          <li class="flex items-start gap-2 text-brand-border"><span class="mt-0.5">✗</span> Webhooks</li>
+          <li class="flex items-start gap-2 text-brand-border"><span class="mt-0.5">✗</span> Priority support</li>
+        </ul>
+        <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly for app MyApp"
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+          Get started
+        </a>
+      </div>
+
+      <!-- Starter -->
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+        <div class="mb-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Starter</p>
+          <p class="text-4xl font-bold mb-1">$9<span class="text-lg font-normal text-brand-muted">/mo</span></p>
+          <p class="text-sm text-brand-muted">For small teams</p>
+        </div>
+        <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> 3 apps</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Up to 1,000 users</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Sign-in / sign-up</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Email confirmation</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Role management</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Webhooks</li>
+          <li class="flex items-start gap-2 text-brand-border"><span class="mt-0.5">✗</span> Priority support</li>
+        </ul>
+        <a href="mailto:jemgdev@gmail.com?subject=Starter plan request for Logifly"
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+          Get started
+        </a>
+      </div>
+
+      <!-- Pro (highlighted) -->
+      <div class="bg-black text-white rounded border border-black p-6 shadow-lg flex flex-col relative">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">Most popular</span>
+        <div class="mb-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Pro</p>
+          <p class="text-4xl font-bold mb-1">$29<span class="text-lg font-normal text-gray-400">/mo</span></p>
+          <p class="text-sm text-gray-400">For growing products</p>
+        </div>
+        <ul class="text-sm text-gray-300 space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> 10 apps</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Up to 10,000 users</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Sign-in / sign-up</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Email confirmation</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Role management</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Webhooks</li>
+          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Priority support</li>
+        </ul>
+        <a href="mailto:jemgdev@gmail.com?subject=Pro plan request for Logifly"
+           class="block text-center bg-white text-black text-sm px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors">
+          Get started
+        </a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+        <div class="mb-6">
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Enterprise</p>
+          <p class="text-4xl font-bold mb-1">Custom</p>
+          <p class="text-sm text-brand-muted">For large scale</p>
+        </div>
+        <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Unlimited apps</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Unlimited users</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Sign-in / sign-up</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Email confirmation</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Role management</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Webhooks</li>
+          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Dedicated support</li>
+        </ul>
+        <a href="mailto:jemgdev@gmail.com?subject=Enterprise plan inquiry for Logifly"
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+          Contact us
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Pricing comparison note -->
+    <p class="text-center text-sm text-brand-muted mt-10">
+      All plans include AWS Cognito-backed auth, HTTPS endpoints, and email flows in English & Spanish.<br/>
+      Need something in between? <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">Let's talk.</a>
+    </p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="bg-white border-y border-brand-border py-24">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-14 tracking-tight">FAQ</h2>
+      <div class="space-y-8">
+
+        <div>
+          <h3 class="font-semibold mb-2">How do I get started?</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">Send an email to <strong>jemgdev@gmail.com</strong> with the subject "Owner creation request for Logifly for app <em>YourAppName</em>". We'll create your owner account and send you credentials within 24 hours.</p>
+        </div>
+
+        <div class="border-t border-brand-border pt-8">
+          <h3 class="font-semibold mb-2">What is an "app" in Logifly?</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">An app is a project you manage through Logifly. Each app has its own user pool, roles, and webhook configuration. One user can belong to multiple apps with different roles in each.</p>
+        </div>
+
+        <div class="border-t border-brand-border pt-8">
+          <h3 class="font-semibold mb-2">Do I need to manage AWS infrastructure?</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">No. Logifly runs on AWS but you don't need an AWS account. Everything is managed for you — Cognito, Lambda, DynamoDB. You just call the REST API.</p>
+        </div>
+
+        <div class="border-t border-brand-border pt-8">
+          <h3 class="font-semibold mb-2">What languages are supported for emails?</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">English and Spanish. You choose the language per user when pre-registering them.</p>
+        </div>
+
+        <div class="border-t border-brand-border pt-8">
+          <h3 class="font-semibold mb-2">Can I upgrade or downgrade my plan?</h3>
+          <p class="text-sm text-brand-muted leading-relaxed">Yes. Just reach out to <strong>jemgdev@gmail.com</strong> and we'll adjust your plan. No lock-in.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+    <h2 class="text-3xl font-bold mb-4 tracking-tight">Ready to ship faster?</h2>
+    <p class="text-brand-muted mb-8 max-w-md mx-auto">Stop building auth from scratch. Let Logifly handle it while you focus on what makes your product unique.</p>
+    <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+       class="inline-block bg-black text-white px-10 py-3 rounded font-medium hover:bg-gray-800 transition-colors">
+      Request access
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-border bg-white py-10">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-brand-muted">
+      <span class="font-bold text-brand-text">Logifly</span>
+      <div class="flex gap-6">
+        <a href="#features" class="hover:text-brand-text transition-colors">Features</a>
+        <a href="#pricing" class="hover:text-brand-text transition-colors">Pricing</a>
+        <a href="#faq" class="hover:text-brand-text transition-colors">FAQ</a>
+        <a href="mailto:jemgdev@gmail.com" class="hover:text-brand-text transition-colors">Contact</a>
+      </div>
+      <span>© 2025 Logifly. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>
