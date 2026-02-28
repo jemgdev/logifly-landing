@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logifly — User Authentication as a Service</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ["'Segoe UI'", 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+            sans: ["'Inter'", "'Segoe UI'", 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
           },
           colors: {
             brand: {
@@ -29,12 +32,68 @@
   </script>
   <style>
     html { scroll-behavior: smooth; }
+    .hero-bg {
+      background-color: #f4f4f4;
+      background-image: radial-gradient(#d4d4d4 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, #f4f4f4 100%);
+      pointer-events: none;
+    }
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 0.9em;
+      background: #a78bfa;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-32px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(32px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .hero-copy  { animation: slideInLeft  0.7s ease both; }
+    .hero-code  { animation: slideInRight 0.7s ease 0.2s both; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(6px); }
+    }
+    .scroll-hint { animation: bounce 1.8s ease-in-out infinite; }
+    .pro-card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+    .fade-in-delay-5 { transition-delay: 0.5s; }
+    .fade-in-delay-6 { transition-delay: 0.6s; }
+    details > summary::-webkit-details-marker { display: none; }
+    details > summary { list-style: none; }
   </style>
 </head>
 <body class="bg-brand-bg font-sans text-brand-text">
 
   <!-- Navbar -->
-  <header class="bg-white border-b border-brand-border sticky top-0 z-50">
+  <header class="bg-white/80 backdrop-blur-md border-b border-brand-border sticky top-0 z-50">
     <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2 group">
         <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
@@ -46,105 +105,197 @@
         <span class="text-xl tracking-tight"><span class="font-bold">Logi</span><span class="font-light italic">fly</span></span>
       </a>
       <nav class="hidden md:flex items-center gap-8 text-sm text-brand-muted">
-        <a href="#features" class="hover:text-brand-text transition-colors">Features</a>
-        <a href="#how-it-works" class="hover:text-brand-text transition-colors">How it works</a>
-        <a href="#pricing" class="hover:text-brand-text transition-colors">Pricing</a>
-        <a href="#faq" class="hover:text-brand-text transition-colors">FAQ</a>
-        <a href="https://logifly-api-dev.jemgdev.click/api/v1/docs" target="_blank" rel="noopener" class="hover:text-brand-text transition-colors">API Docs</a>
+        <a href="#features" class="hover:text-brand-text transition-colors" data-i18n="nav.features">Features</a>
+        <a href="#how-it-works" class="hover:text-brand-text transition-colors" data-i18n="nav.how">How it works</a>
+        <a href="#pricing" class="hover:text-brand-text transition-colors" data-i18n="nav.pricing">Pricing</a>
+        <a href="#faq" class="hover:text-brand-text transition-colors" data-i18n="nav.faq">FAQ</a>
+        <a href="https://logifly-api-dev.jemgdev.click/api/v1/docs" target="_blank" rel="noopener" class="hover:text-brand-text transition-colors" data-i18n="nav.docs">API Docs</a>
       </nav>
-      <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
-         class="bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800 transition-colors">
-        Get started
-      </a>
+      <div class="flex items-center gap-3">
+        <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+           class="hidden md:inline-block bg-black text-white text-sm px-5 py-2 rounded hover:bg-gray-800 transition-colors" data-i18n="nav.cta">
+          Get started
+        </a>
+        <!-- Language toggle -->
+        <button id="lang-btn" class="text-xs font-semibold border border-brand-border rounded px-2.5 py-1.5 text-brand-muted hover:text-brand-text hover:border-gray-400 transition-all duration-150 tracking-wide">
+          ES
+        </button>
+        <!-- Mobile hamburger -->
+        <button id="menu-btn" class="md:hidden p-2 rounded hover:bg-brand-bg transition-colors" aria-label="Open menu">
+          <svg id="icon-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg id="icon-close" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-t border-brand-border bg-white/95 backdrop-blur-md">
+      <nav class="max-w-5xl mx-auto px-6 py-4 flex flex-col gap-4 text-sm text-brand-muted">
+        <a href="#features" class="hover:text-brand-text transition-colors py-1" data-i18n="nav.features">Features</a>
+        <a href="#how-it-works" class="hover:text-brand-text transition-colors py-1" data-i18n="nav.how">How it works</a>
+        <a href="#pricing" class="hover:text-brand-text transition-colors py-1" data-i18n="nav.pricing">Pricing</a>
+        <a href="#faq" class="hover:text-brand-text transition-colors py-1" data-i18n="nav.faq">FAQ</a>
+        <a href="https://logifly-api-dev.jemgdev.click/api/v1/docs" target="_blank" rel="noopener" class="hover:text-brand-text transition-colors py-1" data-i18n="nav.docs">API Docs</a>
+        <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+           class="bg-black text-white text-sm px-5 py-2 rounded text-center hover:bg-gray-800 transition-colors mt-2" data-i18n="nav.cta">
+          Get started
+        </a>
+      </nav>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="max-w-5xl mx-auto px-6 py-24 text-center">
-    <span class="inline-block text-xs font-medium bg-black text-white px-3 py-1 rounded-full mb-6 tracking-widest uppercase">Authentication as a Service</span>
-    <h1 class="text-5xl font-bold leading-tight mb-6 tracking-tight">
-      User management,<br class="hidden md:block" /> done for you.
-    </h1>
-    <p class="text-lg text-brand-muted max-w-xl mx-auto mb-10 leading-relaxed">
-      Logifly handles authentication, registration, roles, and sessions for all your apps — so you can focus on building your product.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
-         class="bg-black text-white px-8 py-3 rounded font-medium hover:bg-gray-800 transition-colors">
-        Request access
-      </a>
-      <a href="#how-it-works"
-         class="border border-brand-border bg-white text-brand-text px-8 py-3 rounded font-medium hover:bg-brand-bg transition-colors">
-        See how it works
+  <section class="hero-bg relative max-w-full px-6 py-24">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
+
+      <!-- Left: copy -->
+      <div class="flex-1 text-center md:text-left hero-copy">
+        <span class="inline-block text-xs font-medium bg-black text-white px-3 py-1 rounded-full mb-6 tracking-widest uppercase" data-i18n="hero.badge">Authentication as a Service</span>
+        <h1 class="text-5xl font-bold leading-tight mb-6 tracking-tight" data-i18n="hero.title">
+          User management,<br /> done for you.
+        </h1>
+        <p class="text-lg text-brand-muted mb-10 leading-relaxed" data-i18n="hero.subtitle">
+          Logifly handles authentication, registration, roles, and sessions for all your apps — so you can focus on building your product.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+             class="bg-black text-white px-8 py-3 rounded font-medium hover:bg-gray-800 transition-colors" data-i18n="hero.cta1">
+            Request access
+          </a>
+          <a href="#how-it-works"
+             class="border border-brand-border bg-white text-brand-text px-8 py-3 rounded font-medium hover:bg-brand-bg transition-colors" data-i18n="hero.cta2">
+            See how it works
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: code mockup -->
+      <div class="flex-1 w-full max-w-sm md:max-w-none hero-code">
+        <div class="bg-[#0f0f0f] rounded-xl overflow-hidden shadow-xl border border-white/10 text-sm font-mono" style="box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(139,92,246,0.08);">
+          <!-- window chrome -->
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+            <span class="w-3 h-3 rounded-full bg-red-500/70"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/70"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/70"></span>
+            <span class="ml-3 text-xs text-white/30">POST /api/v1/signin</span>
+          </div>
+          <!-- code body -->
+          <div class="px-5 py-5 space-y-1 leading-relaxed">
+            <p><span class="text-purple-400">fetch</span><span class="text-white/60">(</span><span class="text-green-400">'https://api.logifly.dev/v1/signin'</span><span class="text-white/60">, {</span></p>
+            <p class="pl-4"><span class="text-blue-400">method</span><span class="text-white/60">: </span><span class="text-green-400">'POST'</span><span class="text-white/60">,</span></p>
+            <p class="pl-4"><span class="text-blue-400">body</span><span class="text-white/60">: </span><span class="text-purple-400">JSON</span><span class="text-white/60">.</span><span class="text-yellow-400">stringify</span><span class="text-white/60">({</span></p>
+            <p class="pl-8"><span class="text-blue-400">email</span><span class="text-white/60">: </span><span class="text-green-400">'user@example.com'</span><span class="text-white/60">,</span></p>
+            <p class="pl-8"><span class="text-blue-400">password</span><span class="text-white/60">: </span><span class="text-green-400">'••••••••'</span></p>
+            <p class="pl-4"><span class="text-white/60">})</span></p>
+            <p><span class="text-white/60">})</span></p>
+            <div class="mt-4 pt-4 border-t border-white/10">
+              <p class="text-white/40 text-xs mb-2">// Response 200</p>
+              <p><span class="text-white/60">{</span></p>
+              <p class="pl-4"><span class="text-blue-400">accessToken</span><span class="text-white/60">: </span><span class="text-green-400">"eyJhbGciOiJSUzI1..."</span><span class="text-white/60">,</span></p>
+              <p class="pl-4"><span class="text-blue-400">refreshToken</span><span class="text-white/60">: </span><span class="text-green-400">"eyJhbGciOiJSUzI1..."</span><span class="text-white/60">,</span></p>
+              <p class="pl-4"><span class="text-blue-400">expiresIn</span><span class="text-white/60">: </span><span class="text-yellow-400">3600</span></p>
+              <p><span class="text-white/60">}</span><span class="cursor"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="flex justify-center mt-16 relative z-10">
+      <a href="#features" class="scroll-hint text-brand-muted/50 hover:text-brand-muted transition-colors">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </a>
     </div>
+
   </section>
 
   <!-- Social proof strip -->
-  <div class="border-y border-brand-border bg-white py-5">
-    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-8 text-sm text-brand-muted">
-      <span>AWS Cognito backed</span>
-      <span>Multi-app support</span>
-      <span>Role-based access</span>
-      <span>Email confirmation flows</span>
-      <span>Webhook integration</span>
+  <div class="border-y border-brand-border bg-white py-8">
+    <div class="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-3">
+
+      <span class="flex items-center gap-2 bg-brand-bg border border-brand-border rounded-full px-4 py-2 text-sm font-medium text-brand-text hover:border-gray-400 hover:bg-white transition-all duration-150 cursor-default fade-in fade-in-delay-1">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="badges.b1">AWS Cognito backed</span>
+      </span>
+
+      <span class="flex items-center gap-2 bg-brand-bg border border-brand-border rounded-full px-4 py-2 text-sm font-medium text-brand-text hover:border-gray-400 hover:bg-white transition-all duration-150 cursor-default fade-in fade-in-delay-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span data-i18n="badges.b2">Multi-app support</span>
+      </span>
+
+      <span class="flex items-center gap-2 bg-brand-bg border border-brand-border rounded-full px-4 py-2 text-sm font-medium text-brand-text hover:border-gray-400 hover:bg-white transition-all duration-150 cursor-default fade-in fade-in-delay-3">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span data-i18n="badges.b3">Role-based access</span>
+      </span>
+
+      <span class="flex items-center gap-2 bg-brand-bg border border-brand-border rounded-full px-4 py-2 text-sm font-medium text-brand-text hover:border-gray-400 hover:bg-white transition-all duration-150 cursor-default fade-in fade-in-delay-4">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span data-i18n="badges.b4">Email confirmation flows</span>
+      </span>
+
+      <span class="flex items-center gap-2 bg-brand-bg border border-brand-border rounded-full px-4 py-2 text-sm font-medium text-brand-text hover:border-gray-400 hover:bg-white transition-all duration-150 cursor-default fade-in fade-in-delay-5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span data-i18n="badges.b5">Webhook integration</span>
+      </span>
+
     </div>
   </div>
 
   <!-- Features -->
   <section id="features" class="max-w-5xl mx-auto px-6 py-24">
-    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">Everything you need</h2>
-    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight" data-i18n="features.title">Everything you need</h2>
+    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto" data-i18n="features.subtitle">
       A complete auth layer for your apps. No infrastructure to manage, no Cognito config to wrestle with.
     </p>
     <div class="grid md:grid-cols-3 gap-6">
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-1">
+        <div class="w-9 h-9 bg-violet-50 border border-violet-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Secure sign-in & sign-up</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">Email-based registration with confirmation links, password policies, and token-based sessions.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f1.title">Secure sign-in & sign-up</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f1.desc">Email-based registration with confirmation links, password policies, and token-based sessions.</p>
       </div>
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-2">
+        <div class="w-9 h-9 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Multi-app architecture</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">One Logifly account manages users across multiple apps. Each app has its own user pool and roles.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f2.title">Multi-app architecture</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f2.desc">One Logifly account manages users across multiple apps. Each app has its own user pool and roles.</p>
       </div>
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-3">
+        <div class="w-9 h-9 bg-emerald-50 border border-emerald-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Role management</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">Assign and revoke roles per user per app. Validate roles on every request via the verify endpoint.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f3.title">Role management</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f3.desc">Assign and revoke roles per user per app. Validate roles on every request via the verify endpoint.</p>
       </div>
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-4">
+        <div class="w-9 h-9 bg-amber-50 border border-amber-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Session refresh</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">Access tokens last 60 minutes. Refresh tokens last 7 days. Seamless session continuity for your users.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f4.title">Session refresh</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f4.desc">Access tokens last 60 minutes. Refresh tokens last 7 days. Seamless session continuity for your users.</p>
       </div>
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-5">
+        <div class="w-9 h-9 bg-sky-50 border border-sky-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Email flows</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">Branded confirmation and password-reset emails in English and Spanish, sent automatically.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f5.title">Email flows</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f5.desc">Branded confirmation and password-reset emails in English and Spanish, sent automatically.</p>
       </div>
 
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm">
-        <div class="w-8 h-8 bg-brand-bg rounded flex items-center justify-center mb-4">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-200 fade-in fade-in-delay-6">
+        <div class="w-9 h-9 bg-rose-50 border border-rose-100 rounded-lg flex items-center justify-center mb-4">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
         </div>
-        <h3 class="font-semibold mb-2">Webhooks</h3>
-        <p class="text-sm text-brand-muted leading-relaxed">Get notified when a user registers. Connect Logifly to your backend with a simple webhook URL.</p>
+        <h3 class="font-semibold mb-2" data-i18n="features.f6.title">Webhooks</h3>
+        <p class="text-sm text-brand-muted leading-relaxed" data-i18n="features.f6.desc">Get notified when a user registers. Connect Logifly to your backend with a simple webhook URL.</p>
       </div>
 
     </div>
@@ -153,120 +304,120 @@
   <!-- How it works -->
   <section id="how-it-works" class="bg-white border-y border-brand-border py-24">
     <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">How it works</h2>
-      <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-4 tracking-tight" data-i18n="how.title">How it works</h2>
+      <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto" data-i18n="how.subtitle">
         Up and running in minutes. No SDK required — just REST API calls.
       </p>
-      <div class="grid md:grid-cols-3 gap-10">
+      <div class="grid md:grid-cols-3 gap-10 relative">
+        <div class="hidden md:block absolute top-5 left-[calc(16.66%+20px)] right-[calc(16.66%+20px)] h-px border-t-2 border-dashed border-brand-border"></div>
 
-        <div class="text-center">
-          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">1</div>
-          <h3 class="font-semibold mb-2">Request an owner account</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">Send an email to <strong>jemgdev@gmail.com</strong> with your app name. We'll create your owner account and send you credentials.</p>
+        <div class="text-center relative fade-in fade-in-delay-1">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4 relative z-10 ring-4 ring-white shadow-md">1</div>
+          <h3 class="font-semibold mb-2" data-i18n="how.s1.title">Request an owner account</h3>
+          <p class="text-sm text-brand-muted leading-relaxed" data-i18n="how.s1.desc">Send an email to <strong>jemgdev@gmail.com</strong> with your app name. We'll create your owner account and send you credentials.</p>
         </div>
 
-        <div class="text-center">
-          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">2</div>
-          <h3 class="font-semibold mb-2">Integrate the API</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">Use your owner tokens to call the Logifly REST API. Pre-register users, manage roles, and verify sessions from your backend.</p>
+        <div class="text-center relative fade-in fade-in-delay-2">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4 relative z-10 ring-4 ring-white shadow-md">2</div>
+          <h3 class="font-semibold mb-2" data-i18n="how.s2.title">Integrate the API</h3>
+          <p class="text-sm text-brand-muted leading-relaxed" data-i18n="how.s2.desc">Use your owner tokens to call the Logifly REST API. Pre-register users, manage roles, and verify sessions from your backend.</p>
         </div>
 
-        <div class="text-center">
-          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">3</div>
-          <h3 class="font-semibold mb-2">Ship your product</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">Your users get a smooth auth experience. You get full control over roles, sessions, and webhooks — without managing infrastructure.</p>
+        <div class="text-center relative fade-in fade-in-delay-3">
+          <div class="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center text-sm font-bold mx-auto mb-4 relative z-10 ring-4 ring-white shadow-md">3</div>
+          <h3 class="font-semibold mb-2" data-i18n="how.s3.title">Ship your product</h3>
+          <p class="text-sm text-brand-muted leading-relaxed" data-i18n="how.s3.desc">Your users get a smooth auth experience. You get full control over roles, sessions, and webhooks — without managing infrastructure.</p>
         </div>
-
       </div>
     </div>
   </section>
 
   <!-- Pricing -->
   <section id="pricing" class="max-w-5xl mx-auto px-6 py-24">
-    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight">Simple pricing</h2>
-    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-4 tracking-tight" data-i18n="pricing.title">Simple pricing</h2>
+    <p class="text-center text-brand-muted mb-14 max-w-lg mx-auto" data-i18n="pricing.subtitle">
       Pay for what you use. Scale as your apps grow.
     </p>
 
     <div class="grid md:grid-cols-4 gap-6 items-start">
 
-      <!-- Free -->
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+      <!-- Basic -->
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col fade-in fade-in-delay-1 hover:border-gray-400 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
         <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Free</p>
-          <p class="text-4xl font-bold mb-1">$0</p>
-          <p class="text-sm text-brand-muted">Forever free</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2" data-i18n="pricing.basic.name">Basic</p>
+          <p class="text-4xl font-bold mb-1">$1<span class="text-lg font-normal text-brand-muted">/mo</span></p>
+          <p class="text-sm text-brand-muted" data-i18n="pricing.basic.desc">To get started</p>
         </div>
         <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> 1 app</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Up to 100 users</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> All features included</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Webhooks</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Community support</li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.1app">1 app</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.100users">Up to 10,000 users</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.allfeatures">All features included</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.webhooks">Webhooks</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.community">Community support</span></li>
         </ul>
-        <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly for app MyApp"
-           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+        <a href="mailto:jemgdev@gmail.com?subject=Basic plan request for Logifly"
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors" data-i18n="pricing.cta.start">
           Get started
         </a>
       </div>
 
       <!-- Starter -->
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col fade-in fade-in-delay-2 hover:border-gray-400 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
         <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Starter</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2" data-i18n="pricing.starter.name">Starter</p>
           <p class="text-4xl font-bold mb-1">$9<span class="text-lg font-normal text-brand-muted">/mo</span></p>
-          <p class="text-sm text-brand-muted">For small teams</p>
+          <p class="text-sm text-brand-muted" data-i18n="pricing.starter.desc">For small teams</p>
         </div>
         <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> 2 apps</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Up to 1,000 users</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> All features included</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Webhooks</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Email support</li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.2apps">2 apps</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.1kusers">Up to 100,000 users</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.allfeatures">All features included</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.webhooks">Webhooks</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.email-support">Email support</span></li>
         </ul>
         <a href="mailto:jemgdev@gmail.com?subject=Starter plan request for Logifly"
-           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors" data-i18n="pricing.cta.start">
           Get started
         </a>
       </div>
 
       <!-- Pro (highlighted) -->
-      <div class="bg-black text-white rounded border border-black p-6 shadow-lg flex flex-col relative">
-        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">Most popular</span>
+      <div class="bg-black text-white rounded border border-black p-6 shadow-lg flex flex-col relative fade-in fade-in-delay-3 pro-card-glow hover:-translate-y-1 transition-all duration-200">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20" data-i18n="pricing.pro.badge">Most popular</span>
         <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Pro</p>
-          <p class="text-4xl font-bold mb-1">$29<span class="text-lg font-normal text-gray-400">/mo</span></p>
-          <p class="text-sm text-gray-400">For growing products</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2" data-i18n="pricing.pro.name">Pro</p>
+          <p class="text-4xl font-bold mb-1">$19<span class="text-lg font-normal text-gray-400">/mo</span></p>
+          <p class="text-sm text-gray-400" data-i18n="pricing.pro.desc">For growing products</p>
         </div>
         <ul class="text-sm text-gray-300 space-y-3 mb-8 flex-1">
-          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> 10 apps</li>
-          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Up to 5,000 users</li>
-          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> All features included</li>
-          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Webhooks</li>
-          <li class="flex items-start gap-2"><span class="text-white mt-0.5">✓</span> Priority support</li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-white" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.10apps">10 apps</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-white" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.5kusers">Up to 1,000,000 users</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-white" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.allfeatures">All features included</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-white" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.webhooks">Webhooks</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-white" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.priority">Priority support</span></li>
         </ul>
         <a href="mailto:jemgdev@gmail.com?subject=Pro plan request for Logifly"
-           class="block text-center bg-white text-black text-sm px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors">
+           class="block text-center bg-white text-black text-sm px-4 py-2 rounded font-medium hover:bg-gray-100 transition-colors" data-i18n="pricing.cta.start">
           Get started
         </a>
       </div>
 
       <!-- Enterprise -->
-      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col">
+      <div class="bg-white rounded border border-brand-border p-6 shadow-sm flex flex-col fade-in fade-in-delay-4 hover:border-gray-400 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
         <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2">Enterprise</p>
-          <p class="text-4xl font-bold mb-1">Custom</p>
-          <p class="text-sm text-brand-muted">For large scale</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-brand-muted mb-2" data-i18n="pricing.enterprise.name">Enterprise</p>
+          <p class="text-4xl font-bold mb-1" data-i18n="pricing.enterprise.price">Custom</p>
+          <p class="text-sm text-brand-muted" data-i18n="pricing.enterprise.desc">For large scale</p>
         </div>
         <ul class="text-sm text-brand-muted space-y-3 mb-8 flex-1">
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Unlimited apps</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Unlimited users</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> All features included</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Webhooks</li>
-          <li class="flex items-start gap-2"><span class="text-black mt-0.5">✓</span> Dedicated support</li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.unlimited-apps">Unlimited apps</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.unlimited-users">Unlimited users</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.allfeatures">All features included</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.webhooks">Webhooks</span></li>
+          <li class="flex items-center gap-2"><svg class="shrink-0 text-black" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="pricing.li.dedicated">Dedicated support</span></li>
         </ul>
         <a href="mailto:jemgdev@gmail.com?subject=Enterprise plan inquiry for Logifly"
-           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors">
+           class="block text-center border border-brand-border text-brand-text text-sm px-4 py-2 rounded hover:bg-brand-bg transition-colors" data-i18n="pricing.cta.contact">
           Contact us
         </a>
       </div>
@@ -275,59 +426,83 @@
 
     <!-- Pricing comparison note -->
     <p class="text-center text-sm text-brand-muted mt-10">
-      All plans include all features, webhooks, and email flows in English & Spanish.<br/>
-      Need something in between? <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">Let's talk.</a>
+      <span data-i18n="pricing.note">All plans include all features, webhooks, and email flows in English & Spanish.</span><br/>
+      <span data-i18n="pricing.note2">Need something in between?</span> <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text" data-i18n="pricing.talk">Let's talk.</a>
     </p>
 
-    <div class="mt-8 bg-white border border-brand-border rounded p-6 max-w-2xl mx-auto text-sm text-brand-muted leading-relaxed">
-      <p class="font-semibold text-brand-text mb-2">A note on limits & billing</p>
-      <p>Limits and payments are not enforced automatically. If your app grows beyond your plan's limits, <strong>your service will not be interrupted</strong>. We always prioritize your needs first — then we figure out the right plan together. Reach out to <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">jemgdev@gmail.com</a> and we'll work it out.</p>
+    <div class="mt-8 bg-white border border-brand-border border-l-4 border-l-black rounded p-6 max-w-2xl mx-auto text-sm text-brand-muted leading-relaxed">
+      <p class="font-semibold text-brand-text mb-2" data-i18n="pricing.billing.title">A note on limits & billing</p>
+      <p data-i18n="pricing.billing.body">Limits and payments are not enforced automatically. If your app grows beyond your plan's limits, <strong>your service will not be interrupted</strong>. We always prioritize your needs first — then we figure out the right plan together. Reach out to <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">jemgdev@gmail.com</a> and we'll work it out.</p>
     </div>
   </section>
 
   <!-- FAQ -->
   <section id="faq" class="bg-white border-y border-brand-border py-24">
     <div class="max-w-2xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-14 tracking-tight">FAQ</h2>
-      <div class="space-y-8">
+      <h2 class="text-3xl font-bold text-center mb-14 tracking-tight" data-i18n="faq.title">FAQ</h2>
+      <div class="divide-y divide-brand-border">
 
-        <div>
-          <h3 class="font-semibold mb-2">How do I get started?</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">Send an email to <strong>jemgdev@gmail.com</strong> with the subject "Owner creation request for Logifly for app <em>YourAppName</em>". We'll create your owner account and send you credentials within 24 hours.</p>
-        </div>
+        <details class="group py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-brand-text select-none">
+            <span data-i18n="faq.q1.q">How do I get started?</span>
+            <svg class="w-4 h-4 text-brand-muted transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-brand-muted leading-relaxed" data-i18n="faq.q1.a">Send an email to <strong>jemgdev@gmail.com</strong> with the subject "Owner creation request for Logifly for app <em>YourAppName</em>". We'll create your owner account and send you credentials within 24 hours.</p>
+        </details>
 
-        <div class="border-t border-brand-border pt-8">
-          <h3 class="font-semibold mb-2">What is an "app" in Logifly?</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">An app is a project you manage through Logifly. Each app has its own user pool, roles, and webhook configuration. One user can belong to multiple apps with different roles in each.</p>
-        </div>
+        <details class="group py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-brand-text select-none">
+            <span data-i18n="faq.q2.q">What is an "app" in Logifly?</span>
+            <svg class="w-4 h-4 text-brand-muted transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-brand-muted leading-relaxed" data-i18n="faq.q2.a">An app is a project you manage through Logifly. Each app has its own user pool, roles, and webhook configuration. One user can belong to multiple apps with different roles in each.</p>
+        </details>
 
-        <div class="border-t border-brand-border pt-8">
-          <h3 class="font-semibold mb-2">Do I need to manage AWS infrastructure?</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">No. Logifly runs on AWS but you don't need an AWS account. Everything is managed for you — Cognito, Lambda, DynamoDB. You just call the REST API.</p>
-        </div>
+        <details class="group py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-brand-text select-none">
+            <span data-i18n="faq.q3.q">Do I need to manage AWS infrastructure?</span>
+            <svg class="w-4 h-4 text-brand-muted transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-brand-muted leading-relaxed" data-i18n="faq.q3.a">No. Logifly runs on AWS but you don't need an AWS account. Everything is managed for you — Cognito, Lambda, DynamoDB. You just call the REST API.</p>
+        </details>
 
-        <div class="border-t border-brand-border pt-8">
-          <h3 class="font-semibold mb-2">What languages are supported for emails?</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">English and Spanish. You choose the language per user when pre-registering them.</p>
-        </div>
+        <details class="group py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-brand-text select-none">
+            <span data-i18n="faq.q4.q">What languages are supported for emails?</span>
+            <svg class="w-4 h-4 text-brand-muted transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-brand-muted leading-relaxed" data-i18n="faq.q4.a">English and Spanish. You choose the language per user when pre-registering them.</p>
+        </details>
 
-        <div class="border-t border-brand-border pt-8">
-          <h3 class="font-semibold mb-2">Can I upgrade or downgrade my plan?</h3>
-          <p class="text-sm text-brand-muted leading-relaxed">Yes. Just reach out to <strong>jemgdev@gmail.com</strong> and we'll adjust your plan. No lock-in.</p>
-        </div>
+        <details class="group py-5">
+          <summary class="flex items-center justify-between cursor-pointer list-none font-semibold text-brand-text select-none">
+            <span data-i18n="faq.q5.q">Can I upgrade or downgrade my plan?</span>
+            <svg class="w-4 h-4 text-brand-muted transition-transform duration-200 group-open:rotate-180 shrink-0 ml-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <p class="mt-3 text-sm text-brand-muted leading-relaxed" data-i18n="faq.q5.a">Yes. Just reach out to <strong>jemgdev@gmail.com</strong> and we'll adjust your plan. No lock-in.</p>
+        </details>
 
       </div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="max-w-5xl mx-auto px-6 py-24 text-center">
-    <h2 class="text-3xl font-bold mb-4 tracking-tight">Ready to ship faster?</h2>
-    <p class="text-brand-muted mb-8 max-w-md mx-auto">Stop building auth from scratch. Let Logifly handle it while you focus on what makes your product unique.</p>
-    <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
-       class="inline-block bg-black text-white px-10 py-3 rounded font-medium hover:bg-gray-800 transition-colors">
-      Request access
-    </a>
+  <section class="bg-black text-white py-24">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <span class="inline-block text-xs font-medium border border-white/20 text-white/60 px-3 py-1 rounded-full mb-6 tracking-widest uppercase" data-i18n="cta.badge">Get started today</span>
+      <h2 class="text-4xl font-bold mb-4 tracking-tight" data-i18n="cta.title">Ready to ship faster?</h2>
+      <p class="text-white/60 mb-10 max-w-md mx-auto text-lg leading-relaxed" data-i18n="cta.subtitle">Stop building auth from scratch. Let Logifly handle it while you focus on what makes your product unique.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="mailto:jemgdev@gmail.com?subject=Owner creation request for Logifly"
+           class="inline-block bg-white text-black px-10 py-3 rounded font-medium hover:bg-gray-100 transition-colors" data-i18n="cta.cta1">
+          Request access
+        </a>
+        <a href="https://logifly-api-dev.jemgdev.click/api/v1/docs" target="_blank" rel="noopener"
+           class="inline-block border border-white/20 text-white px-10 py-3 rounded font-medium hover:bg-white/10 transition-colors" data-i18n="cta.cta2">
+          View API docs
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->
@@ -349,9 +524,179 @@
         <a href="https://logifly-api-dev.jemgdev.click/api/v1/docs" target="_blank" rel="noopener" class="hover:text-brand-text transition-colors">API Docs</a>
         <a href="mailto:jemgdev@gmail.com" class="hover:text-brand-text transition-colors">Contact</a>
       </div>
-      <span>© 2025 Logifly. All rights reserved.</span>
+      <span>© 2026 Logifly. All rights reserved.</span>
     </div>
   </footer>
 
+  <script>
+    // ── i18n ──────────────────────────────────────────────────────────────
+    const translations = {
+      en: {
+        'nav.features': 'Features', 'nav.how': 'How it works', 'nav.pricing': 'Pricing',
+        'nav.faq': 'FAQ', 'nav.docs': 'API Docs', 'nav.cta': 'Get started',
+        'hero.badge': 'Authentication as a Service',
+        'hero.title': 'User management,<br /> done for you.',
+        'hero.subtitle': 'Logifly handles authentication, registration, roles, and sessions for all your apps — so you can focus on building your product.',
+        'hero.cta1': 'Request access', 'hero.cta2': 'See how it works',
+        'features.title': 'Everything you need',
+        'features.subtitle': 'A complete auth layer for your apps. No infrastructure to manage, no Cognito config to wrestle with.',
+        'features.f1.title': 'Secure sign-in & sign-up',
+        'features.f1.desc': 'Email-based registration with confirmation links, password policies, and token-based sessions.',
+        'features.f2.title': 'Multi-app architecture',
+        'features.f2.desc': 'One Logifly account manages users across multiple apps. Each app has its own user pool and roles.',
+        'features.f3.title': 'Role management',
+        'features.f3.desc': 'Assign and revoke roles per user per app. Validate roles on every request via the verify endpoint.',
+        'features.f4.title': 'Session refresh',
+        'features.f4.desc': 'Access tokens last 60 minutes. Refresh tokens last 7 days. Seamless session continuity for your users.',
+        'features.f5.title': 'Email flows',
+        'features.f5.desc': 'Branded confirmation and password-reset emails in English and Spanish, sent automatically.',
+        'features.f6.title': 'Webhooks',
+        'features.f6.desc': 'Get notified when a user registers. Connect Logifly to your backend with a simple webhook URL.',
+        'how.title': 'How it works',
+        'how.subtitle': 'Up and running in minutes. No SDK required — just REST API calls.',
+        'how.s1.title': 'Request an owner account',
+        'how.s1.desc': 'Send an email to <strong>jemgdev@gmail.com</strong> with your app name. We\'ll create your owner account and send you credentials.',
+        'how.s2.title': 'Integrate the API',
+        'how.s2.desc': 'Use your owner tokens to call the Logifly REST API. Pre-register users, manage roles, and verify sessions from your backend.',
+        'how.s3.title': 'Ship your product',
+        'how.s3.desc': 'Your users get a smooth auth experience. You get full control over roles, sessions, and webhooks — without managing infrastructure.',
+        'faq.title': 'FAQ',
+        'faq.q1.q': 'How do I get started?',
+        'faq.q1.a': 'Send an email to <strong>jemgdev@gmail.com</strong> with the subject "Owner creation request for Logifly for app <em>YourAppName</em>". We\'ll create your owner account and send you credentials within 24 hours.',
+        'faq.q2.q': 'What is an "app" in Logifly?',
+        'faq.q2.a': 'An app is a project you manage through Logifly. Each app has its own user pool, roles, and webhook configuration. One user can belong to multiple apps with different roles in each.',
+        'faq.q3.q': 'Do I need to manage AWS infrastructure?',
+        'faq.q3.a': 'No. Logifly runs on AWS but you don\'t need an AWS account. Everything is managed for you — Cognito, Lambda, DynamoDB. You just call the REST API.',
+        'faq.q4.q': 'What languages are supported for emails?',
+        'faq.q4.a': 'English and Spanish. You choose the language per user when pre-registering them.',
+        'faq.q5.q': 'Can I upgrade or downgrade my plan?',
+        'faq.q5.a': 'Yes. Just reach out to <strong>jemgdev@gmail.com</strong> and we\'ll adjust your plan. No lock-in.',
+        'cta.badge': 'Get started today', 'cta.title': 'Ready to ship faster?',
+        'cta.subtitle': 'Stop building auth from scratch. Let Logifly handle it while you focus on what makes your product unique.',
+        'cta.cta1': 'Request access', 'cta.cta2': 'View API docs',
+        'badges.b1': 'AWS Cognito backed', 'badges.b2': 'Multi-app support',
+        'badges.b3': 'Role-based access', 'badges.b4': 'Email confirmation flows',
+        'badges.b5': 'Webhook integration',
+        'pricing.title': 'Simple pricing', 'pricing.subtitle': 'Pay for what you use. Scale as your apps grow.',
+        'pricing.basic.name': 'Basic', 'pricing.basic.desc': 'To get started',
+        'pricing.starter.name': 'Starter', 'pricing.starter.desc': 'For small teams',
+        'pricing.pro.name': 'Pro', 'pricing.pro.desc': 'For growing products', 'pricing.pro.badge': 'Most popular',
+        'pricing.enterprise.name': 'Enterprise', 'pricing.enterprise.price': 'Custom', 'pricing.enterprise.desc': 'For large scale',
+        'pricing.cta.start': 'Get started', 'pricing.cta.contact': 'Contact us',
+        'pricing.li.1app': '1 app', 'pricing.li.2apps': '2 apps', 'pricing.li.10apps': '10 apps',
+        'pricing.li.100users': 'Up to 10,000 users', 'pricing.li.1kusers': 'Up to 100,000 users', 'pricing.li.5kusers': 'Up to 1,000,000 users',
+        'pricing.li.unlimited-apps': 'Unlimited apps', 'pricing.li.unlimited-users': 'Unlimited users',
+        'pricing.li.allfeatures': 'All features included', 'pricing.li.webhooks': 'Webhooks',
+        'pricing.li.community': 'Community support', 'pricing.li.email-support': 'Email support',
+        'pricing.li.priority': 'Priority support', 'pricing.li.dedicated': 'Dedicated support',
+        'pricing.note': 'All plans include all features, webhooks, and email flows in English & Spanish.',
+        'pricing.note2': 'Need something in between?', 'pricing.talk': "Let's talk.",
+        'pricing.billing.title': 'A note on limits & billing',
+        'pricing.billing.body': 'Limits and payments are not enforced automatically. If your app grows beyond your plan\'s limits, <strong>your service will not be interrupted</strong>. We always prioritize your needs first — then we figure out the right plan together. Reach out to <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">jemgdev@gmail.com</a> and we\'ll work it out.',
+      },
+      es: {
+        'nav.features': 'Funciones', 'nav.how': 'Cómo funciona', 'nav.pricing': 'Precios',
+        'nav.faq': 'FAQ', 'nav.docs': 'Docs API', 'nav.cta': 'Comenzar',
+        'hero.badge': 'Autenticación como Servicio',
+        'hero.title': 'Gestión de usuarios,<br /> resuelta para ti.',
+        'hero.subtitle': 'Logifly maneja autenticación, registro, roles y sesiones para todas tus apps — para que puedas enfocarte en construir tu producto.',
+        'hero.cta1': 'Solicitar acceso', 'hero.cta2': 'Ver cómo funciona',
+        'features.title': 'Todo lo que necesitas',
+        'features.subtitle': 'Una capa de autenticación completa para tus apps. Sin infraestructura que gestionar, sin configurar Cognito.',
+        'features.f1.title': 'Inicio de sesión seguro',
+        'features.f1.desc': 'Registro por email con links de confirmación, políticas de contraseña y sesiones basadas en tokens.',
+        'features.f2.title': 'Arquitectura multi-app',
+        'features.f2.desc': 'Una cuenta Logifly gestiona usuarios en múltiples apps. Cada app tiene su propio pool de usuarios y roles.',
+        'features.f3.title': 'Gestión de roles',
+        'features.f3.desc': 'Asigna y revoca roles por usuario por app. Valida roles en cada request vía el endpoint de verificación.',
+        'features.f4.title': 'Renovación de sesión',
+        'features.f4.desc': 'Los access tokens duran 60 minutos. Los refresh tokens duran 7 días. Continuidad de sesión sin interrupciones.',
+        'features.f5.title': 'Flujos de email',
+        'features.f5.desc': 'Emails de confirmación y recuperación de contraseña con tu marca, en inglés y español, enviados automáticamente.',
+        'features.f6.title': 'Webhooks',
+        'features.f6.desc': 'Recibe notificaciones cuando un usuario se registra. Conecta Logifly a tu backend con una simple URL de webhook.',
+        'how.title': 'Cómo funciona',
+        'how.subtitle': 'En funcionamiento en minutos. Sin SDK — solo llamadas REST.',
+        'how.s1.title': 'Solicita una cuenta owner',
+        'how.s1.desc': 'Envía un email a <strong>jemgdev@gmail.com</strong> con el nombre de tu app. Crearemos tu cuenta y te enviaremos las credenciales.',
+        'how.s2.title': 'Integra la API',
+        'how.s2.desc': 'Usa tus tokens de owner para llamar a la API REST de Logifly. Pre-registra usuarios, gestiona roles y verifica sesiones desde tu backend.',
+        'how.s3.title': 'Lanza tu producto',
+        'how.s3.desc': 'Tus usuarios tienen una experiencia de autenticación fluida. Tú tienes control total sobre roles, sesiones y webhooks — sin gestionar infraestructura.',
+        'faq.title': 'Preguntas frecuentes',
+        'faq.q1.q': '¿Cómo empiezo?',
+        'faq.q1.a': 'Envía un email a <strong>jemgdev@gmail.com</strong> con el asunto "Owner creation request for Logifly for app <em>TuAppName</em>". Crearemos tu cuenta y te enviaremos las credenciales en menos de 24 horas.',
+        'faq.q2.q': '¿Qué es una "app" en Logifly?',
+        'faq.q2.a': 'Una app es un proyecto que gestionas a través de Logifly. Cada app tiene su propio pool de usuarios, roles y configuración de webhook. Un usuario puede pertenecer a múltiples apps con diferentes roles en cada una.',
+        'faq.q3.q': '¿Necesito gestionar infraestructura AWS?',
+        'faq.q3.a': 'No. Logifly corre en AWS pero tú no necesitas una cuenta AWS. Todo está gestionado por nosotros — Cognito, Lambda, DynamoDB. Solo llamas a la REST API.',
+        'faq.q4.q': '¿Qué idiomas soportan los emails?',
+        'faq.q4.a': 'Inglés y español. Tú eliges el idioma por usuario al pre-registrarlo.',
+        'faq.q5.q': '¿Puedo cambiar de plan?',
+        'faq.q5.a': 'Sí. Solo escríbenos a <strong>jemgdev@gmail.com</strong> y ajustamos tu plan. Sin compromisos.',
+        'cta.badge': 'Empieza hoy', 'cta.title': '¿Listo para lanzar más rápido?',
+        'cta.subtitle': 'Deja de construir auth desde cero. Deja que Logifly lo maneje mientras tú te enfocas en lo que hace único a tu producto.',
+        'cta.cta1': 'Solicitar acceso', 'cta.cta2': 'Ver docs de la API',
+        'badges.b1': 'Respaldado por AWS Cognito', 'badges.b2': 'Soporte multi-app',
+        'badges.b3': 'Acceso basado en roles', 'badges.b4': 'Flujos de confirmación por email',
+        'badges.b5': 'Integración de webhooks',
+        'pricing.title': 'Precios simples', 'pricing.subtitle': 'Paga por lo que usas. Escala con tus apps.',
+        'pricing.basic.name': 'Básico', 'pricing.basic.desc': 'Para empezar',
+        'pricing.starter.name': 'Starter', 'pricing.starter.desc': 'Para equipos pequeños',
+        'pricing.pro.name': 'Pro', 'pricing.pro.desc': 'Para productos en crecimiento', 'pricing.pro.badge': 'Más popular',
+        'pricing.enterprise.name': 'Enterprise', 'pricing.enterprise.price': 'A medida', 'pricing.enterprise.desc': 'Para gran escala',
+        'pricing.cta.start': 'Comenzar', 'pricing.cta.contact': 'Contáctanos',
+        'pricing.li.1app': '1 app', 'pricing.li.2apps': '2 apps', 'pricing.li.10apps': '10 apps',
+        'pricing.li.100users': 'Hasta 10,000 usuarios', 'pricing.li.1kusers': 'Hasta 100,000 usuarios', 'pricing.li.5kusers': 'Hasta 1,000,000 usuarios',
+        'pricing.li.unlimited-apps': 'Apps ilimitadas', 'pricing.li.unlimited-users': 'Usuarios ilimitados',
+        'pricing.li.allfeatures': 'Todas las funciones incluidas', 'pricing.li.webhooks': 'Webhooks',
+        'pricing.li.community': 'Soporte comunitario', 'pricing.li.email-support': 'Soporte por email',
+        'pricing.li.priority': 'Soporte prioritario', 'pricing.li.dedicated': 'Soporte dedicado',
+        'pricing.note': 'Todos los planes incluyen todas las funciones, webhooks y flujos de email en inglés y español.',
+        'pricing.note2': '¿Necesitas algo intermedio?', 'pricing.talk': 'Hablemos.',
+        'pricing.billing.title': 'Una nota sobre límites y facturación',
+        'pricing.billing.body': 'Los límites y pagos no se aplican automáticamente. Si tu app crece más allá de los límites de tu plan, <strong>tu servicio no se interrumpirá</strong>. Siempre priorizamos tus necesidades primero — luego encontramos el plan correcto juntos. Escríbenos a <a href="mailto:jemgdev@gmail.com" class="underline hover:text-brand-text">jemgdev@gmail.com</a> y lo resolvemos.',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function applyLang(lang) {
+      const t = translations[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key] !== undefined) el.innerHTML = t[key];
+      });
+      document.documentElement.lang = lang;
+      document.getElementById('lang-btn').textContent = lang === 'en' ? 'ES' : 'EN';
+      currentLang = lang;
+    }
+
+    document.getElementById('lang-btn').addEventListener('click', () => {
+      applyLang(currentLang === 'en' ? 'es' : 'en');
+    });
+
+    // ── Scroll animations ─────────────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Mobile menu ───────────────────────────────────────────────────────
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden', !open);
+      iconClose.classList.toggle('hidden', open);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }));
+  </script>
 </body>
 </html>
